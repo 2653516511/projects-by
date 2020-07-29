@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+    <!-- 引入vue -->
+    <script src="file/moment.js"></script>
+    <!-- <script src="../marked"></script> -->
+    <script src="file/vue.js"></script>
+
+    <!-- notebook -->
+    <div id="notebook" >
+
+        <!-- side pane -->
+        <aside class="side-bar">
+            <!-- note list at here -->
+            <div class="toolbar">
+                <!-- add note button -->
+                <button v-bind:title = 'addButtonTitle' v-on:click = 'addNote'> + </i>add note</button>
+            </div>
+            <!-- notes list -->
+            <div class="notes">
+                <div class = 'note' v-for = 'note of sortNotes' @click = 'selectNote(note)'
+                    :class = '{selected: note === showNote}'>
+                    {{note.title}}
+                </div>
+            </div>
+        </aside>
+
+        <template v-if="showNote">
+            <!-- main pane -->
+            <section class="main">
+                <div class="toolbar">
+                    <!-- new tool lists -->
+                    <input v-model = 'showNote.title' placeholder="Note title" id="star"/>
+                    <button class="material-icons" @click = 'deleteNote'>delete</button>
+                    <button class="" @click = 'favoriteNote'>
+                        <i class="material-icons" >{{showNote.favorite ? 'star' : 'unstar'}}</i>
+                    </button>
+                </div>
+                <textarea v-model = 'showNote.content'></textarea>
+                <!-- toolbar status list -->
+                <div class="toolbar status-bar">
+                    <span class="date">
+                        <span class="label">Created date: </span>
+                        <span class="value">{{ showNote.created | date}}</span>
+                    </span>
+                </div>
+            </section>
+        </template>
+
+        <!-- note preview pane -->
+        <!-- <aside class="preview" v-html = 'notePreview'></aside> -->
+
+    </div>
+
+    <!-- 引入js代码 -->
+    <script src="script.js"></script>
+    <!-- <script src="script.js" type="module-model"></script> -->
+</body>
+</html>
