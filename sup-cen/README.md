@@ -13,6 +13,7 @@ npm install
 npm install --save babel-polyfill
 npm install --save-dev stylus stylus-loader
 npm install --save vue-router 
+npm install --save vuex
 npm install --save moment 
 ```
 
