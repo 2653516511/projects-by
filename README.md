@@ -1,2 +1,3 @@
 # projects-by-myself
-vueNoteTest: 直接运行index.html即可
+vueNoteTest: 直接运行index.html即可 </br>
+addFun: npm install ......
