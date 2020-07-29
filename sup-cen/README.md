@@ -2,16 +2,19 @@
 
 # first start server, to fetch the datas, localhost:3000
 # cd server_file
+```bash
 npm install
 npm start
+```
 
 # then start this project
+```bash
 npm install
 npm install --save babel-polyfill
 npm install --save-dev stylus stylus-loader
 npm install --save vue-router 
 npm install --save moment 
-
+```
 
 > A Vue.js project
 
