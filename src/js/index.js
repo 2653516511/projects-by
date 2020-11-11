@@ -21,8 +21,17 @@ import { NEWS_TYPE } from '../data/index'
     // ???? querySelector
     const oApp = doc.querySelector('#app')
 
+    const config = {
+        type: 'top'
+    }
+
     const init = () => {
         render()
+        bindEvent()
+    }
+
+    function bindEvent() {
+        navBar.bindEvent(setType)
     }
 
     function render() {
@@ -36,6 +45,11 @@ import { NEWS_TYPE } from '../data/index'
         const navBarTpl = navBar.tpl(NEWS_TYPE)
 
         oApp.innerHTML += (headerTpl + navBarTpl)
+    }
+
+    function setType(type) {
+        config.type = type
+        console.log('config.type', config.type);
     }
 
     init()

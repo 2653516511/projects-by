@@ -2,10 +2,11 @@ import itemTpl from './tpl/item.tpl'
 import wrapperTpl from './tpl/index.tpl'
 import './index.scss'
 
-import { tplReplace } from '../../libs/utils'
+import { tplReplace, scrollToTop } from '../../libs/utils'
 
 export default {
     name: 'navBar',
+    _curIndex: 0,
     tpl (data) {
         let itemList = ''
 
@@ -23,5 +24,29 @@ export default {
             itemList,
             wrapperW: .6 * data.length
         })
+    },
+    bindEvent(setType) {
+        const oNavBar = document.querySelector('.nav')
+        const oNavItems = document.querySelectorAll('.item')
+
+        oNavBar.addEventListener('click', this._setNav.bind(this, oNavItems, setType), false)
+    },
+    _setNav(items, setType) {
+        // ????target被挤到第[2]位了
+        const tar = arguments[2].target;
+        // 注意，这里去掉前后的空格，防止if里的判断不成立
+        const className = tar.className.trim()
+        // console.log('classname', className)
+
+        if(className === 'item') {
+            // 页面中的 data-type 中的type
+            const type = tar.dataset.type
+            setType(type)
+            scrollToTop()
+
+            items[this._curIndex].className = 'item'
+            this._curIndex = [].indexOf.call(items, tar)
+            items[this._curIndex].className += ' current'
+        }
     }
 }

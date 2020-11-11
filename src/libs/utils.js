@@ -10,6 +10,14 @@ function tplReplace (template, templateObj) {
     })
 }
 
+function scrollToTop() {
+    // 给他异步执行，防止页面还没有加载完，他已经执行了
+    setInterval(() => {
+        window.scrollTo(0, 0)
+    }, 0);
+}
+
 export {
-    tplReplace
+    tplReplace,
+    scrollToTop
 }
