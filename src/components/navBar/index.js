@@ -6,6 +6,7 @@ import { tplReplace, scrollToTop } from '../../libs/utils'
 
 export default {
     name: 'navBar',
+    // 菜单点击事件中用到，索引index
     _curIndex: 0,
     tpl (data) {
         let itemList = ''
@@ -32,6 +33,8 @@ export default {
         oNavBar.addEventListener('click', this._setNav.bind(this, oNavItems, setType), false)
     },
     _setNav(items, setType) {
+        console.log('arguments', arguments);
+        
         // ????target被挤到第[2]位了
         const tar = arguments[2].target;
         // 注意，这里去掉前后的空格，防止if里的判断不成立
