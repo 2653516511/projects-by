@@ -17,7 +17,20 @@ function scrollToTop() {
     }, 0);
 }
 
+// 数据结构的处理
+function setPageData(data, count) {
+    const len = data.length
+    let index = 0
+    const pageData = []
+
+    while(index <= len) {
+        pageData.push(data.slice(index, index += count))
+    }
+    return pageData
+}
+
 export {
     tplReplace,
-    scrollToTop
+    scrollToTop,
+    setPageData
 }

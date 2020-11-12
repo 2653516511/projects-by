@@ -33,10 +33,11 @@ export default {
         oNavBar.addEventListener('click', this._setNav.bind(this, oNavItems, setType), false)
     },
     _setNav(items, setType) {
-        console.log('arguments', arguments);
+        // console.log('arguments', arguments);
         
         // ????target被挤到第[2]位了
         const tar = arguments[2].target;
+        console.log('tar', tar);
         // 注意，这里去掉前后的空格，防止if里的判断不成立
         const className = tar.className.trim()
         // console.log('classname', className)

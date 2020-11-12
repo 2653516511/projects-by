@@ -1,4 +1,5 @@
 import  HTTP from '../libs/http'
+import { setPageData } from '../libs/utils';
 
 class Service extends HTTP {
     getNewsList(type, count) {
@@ -13,8 +14,12 @@ class Service extends HTTP {
                     field: type
                 },
                 success(data) {
-                    // console.log(data);
-                    resolve(data)
+                    console.log(data);
+
+                    // 进行数据结构的处理
+                    const pageData = setPageData(data.result.data, count)
+                    // resolve(data)
+                    resolve(pageData)
                 },
                 error(err) {
                     reject(err)
