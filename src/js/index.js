@@ -55,20 +55,38 @@ import service from '../service';
         const listWrapperTpl = NewsList.wrapperTpl(82)
 
         oApp.innerHTML += (headerTpl + navBarTpl + listWrapperTpl)
+        oListWrapper = oApp.querySelector('.news-list')
+        console.log('oListWrapper', oListWrapper);
+    }
+
+    // wrapper页面中的item列表渲染
+    function renderList(data) {
+        const { pageNum } = config
+        const newsListTpl = NewsList.tpl({
+            data,
+            pageNum
+        })
+
+        oListWrapper.innerHTML += newsListTpl
     }
 
     async function setNewsList() {
         // 解构出type和count
-        const { type, count } = config
+        const { type, count, pageNum } = config
 
         // 判断newsData 中是否已经存在该type，存在，则数据已经请求过，直接从缓存池中拿
         if( newsData[type]) {
+            // renderList(newsData[type][pageNum])
             return
         }
 
         // 返回的是一个promise，所以用await接收
         newsData[type] = await service.getNewsList(type, count)
         console.log('newsData', newsData);
+        // setTimeout(() => {
+            // oListWrapper = ''
+            renderList(newsData[type][pageNum])
+        // }, 1500);
     }
 
     function setType(type) {

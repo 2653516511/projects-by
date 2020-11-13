@@ -16,6 +16,7 @@ export default {
         })
         
     },
+    // item的内容
     tpl (options) {
         // 解构出data和pageNum
         const { data, pageNum } = options
@@ -39,15 +40,18 @@ export default {
                 index,
                 uniqueKey: item.uniqueKey,
                 url: item.url,
+                title: item.title,
                 author: item.author_name,
                 date: item.date,
                 thumbnail_pic_s: item.thumbnail_pic_s,
                 thumbnail_pic_s02: item.thumbnail_pic_s02,
-                thumbnail_pic_s03: item.thumbnail_pic_s03
+                thumbnail_pic_s03: item.thumbnail_pic_s03,
             })
-
-            return list
         })
-    }
+        return list
+    },
+
+    // 图片预加载
+    
 
 }
