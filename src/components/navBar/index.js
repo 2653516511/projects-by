@@ -37,7 +37,7 @@ export default {
         
         // ????target被挤到第[2]位了
         const tar = arguments[2].target;
-        console.log('tar', tar);
+        // console.log('tar', tar);
         // 注意，这里去掉前后的空格，防止if里的判断不成立
         const className = tar.className.trim()
         // console.log('classname', className)

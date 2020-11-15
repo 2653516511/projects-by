@@ -18,6 +18,7 @@ import pageLoading from '../components/pageLoading'
 // 这里解构
 import { NEWS_TYPE } from '../data/index'
 import service from '../service';
+import { scrollToBottom } from '../libs/utils'
 
 // 一般入口文件都是个模块，所以可以用立即执行函数包一下，证明其是一个整体
 ;((doc) => {
@@ -29,7 +30,8 @@ import service from '../service';
         type: 'top',
         count: 10,
         pageNum: 0,
-        // isLoading: true,
+        // 上拉加载更多的锁
+        isLoading: false,
     }
     const newsData = {}
 
@@ -42,6 +44,8 @@ import service from '../service';
 
     function bindEvent() {
         navBar.bindEvent(setType)
+        // 绑定上拉加载更多事件处理函数
+        window.addEventListener('scroll', scrollToBottom.bind(null, getMoreList), false)
     }
 
     function render() {
@@ -58,7 +62,7 @@ import service from '../service';
 
         oApp.innerHTML += (headerTpl + navBarTpl + listWrapperTpl)
         oListWrapper = oApp.querySelector('.news-list')
-        console.log('oListWrapper', oListWrapper);
+        // console.log('oListWrapper', oListWrapper);
     }
 
     // wrapper页面中的item列表渲染
@@ -104,6 +108,23 @@ import service from '../service';
         oListWrapper.innerHTML = ''
         // 切换
         setNewsList()
+    }
+
+    // 上拉加载更多. 触底功能
+    /**
+     * 这里利用锁的概念，没必要非要用防抖节流，
+     *      就直接利用一把锁，控制程序什么时候加载
+     */
+    function getMoreList() {
+        if(!config.isLoading) {
+            config.isLoading = true
+            console.log('reach bottom');
+
+            setTimeout(() => {
+                config.isLoading = false
+            }, 3000);
+        }
+
     }
 
     init()
