@@ -52,6 +52,14 @@ export default {
     },
 
     // 图片预加载
-    
+    imgShow () {
+        const oImgs = document.querySelectorAll('img');
+        // 这里为什么要必须加分号呢
+        [...oImgs].map((img) => {
+            img.onload = function() {
+                img.style.opacity = '1'
+            }
+        })
+    },
 
 }
