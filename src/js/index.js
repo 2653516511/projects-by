@@ -12,19 +12,23 @@ import './imports'
 
 import header from '../components/header'
 import navBar from '../components/navBar'
-import NewsList from '../components/newsList'
+import newsList from '../components/newsList'
 import pageLoading from '../components/pageLoading'
+import moreLoading from '../components/moreLoading'
 
 // 这里解构
 import { NEWS_TYPE } from '../data/index'
 import service from '../service';
 import { scrollToBottom } from '../libs/utils'
 
+
 // 一般入口文件都是个模块，所以可以用立即执行函数包一下，证明其是一个整体
 ;((doc) => {
     // ???? querySelector
     const oApp = doc.querySelector('#app')
     let oListWrapper = null
+    // 清除加载更多
+    let t = null
 
     const config = {
         type: 'top',
@@ -43,7 +47,10 @@ import { scrollToBottom } from '../libs/utils'
     }
 
     function bindEvent() {
+        
         navBar.bindEvent(setType)
+        newsList.bindEvent(oListWrapper, setCurrentNews)
+        
         // 绑定上拉加载更多事件处理函数
         window.addEventListener('scroll', scrollToBottom.bind(null, getMoreList), false)
     }
@@ -55,10 +62,10 @@ import { scrollToBottom } from '../libs/utils'
             showLeftIcon: false,
             showRightIcon: true
         })
-
+        
         const navBarTpl = navBar.tpl(NEWS_TYPE)
 
-        const listWrapperTpl = NewsList.wrapperTpl(82)
+        const listWrapperTpl = newsList.wrapperTpl(82)
 
         oApp.innerHTML += (headerTpl + navBarTpl + listWrapperTpl)
         oListWrapper = oApp.querySelector('.news-list')
@@ -67,15 +74,16 @@ import { scrollToBottom } from '../libs/utils'
 
     // wrapper页面中的item列表渲染
     function renderList(data) {
-        const { pageNum, isLoading } = config
-        const newsListTpl = NewsList.tpl({
+        const { pageNum } = config
+        const newsListTpl = newsList.tpl({
             data,
             pageNum
         })
 
+        moreLoading.remove(oListWrapper)
         oListWrapper.innerHTML += newsListTpl
-        // isLoading = false
-        NewsList.imgShow()
+        config.isLoading = false
+        newsList.imgShow()
     }
 
     // 切换
@@ -105,6 +113,7 @@ import { scrollToBottom } from '../libs/utils'
         config.type = type
         // console.log('config.type', config.type);
         config.pageNum = 0
+        config.isLoading = false
         oListWrapper.innerHTML = ''
         // 切换
         setNewsList()
@@ -117,14 +126,37 @@ import { scrollToBottom } from '../libs/utils'
      */
     function getMoreList() {
         if(!config.isLoading) {
-            config.isLoading = true
-            console.log('reach bottom');
+           
+            // config.isLoading = true
+            // console.log('reach bottom');
 
-            setTimeout(() => {
-                config.isLoading = false
-            }, 3000);
+            // setTimeout(() => {
+            //     config.isLoading = false
+            // }, 3000);
+            // console.log(3);
+            config.pageNum ++
+            clearTimeout(t)
+            // 加完了以后才去解构pageNum
+            const { pageNum, type } = config
+            if(pageNum >= newsData[type].length) {
+                moreLoading.add(oListWrapper, false)
+            } else {
+                config.isLoading = true
+                moreLoading.add(oListWrapper, true)
+                t = setTimeout(() => {
+                    setNewsList()
+                }, 1000);
+            }
         }
 
+    }
+
+    // 跳转的逻辑
+    function setCurrentNews(options) {
+        // console.log();
+        const { idx, pageNum } = options
+        const currentNews = newsData[config.type][pageNum][idx]
+        localStorage.setItem('currentNews', JSON.stringify(currentNews))
     }
 
     init()

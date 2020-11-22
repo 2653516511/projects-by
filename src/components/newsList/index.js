@@ -5,7 +5,7 @@ import tpl3 from './tpl/tpl3.tpl'
 import wrapperTpl from './tpl/wrapper.tpl'
 
 import './index.scss'
-import { tplReplace } from '../../libs/utils'
+import { tplReplace, getItemNode } from '../../libs/utils'
 
 export default {
     name: 'newsList',
@@ -61,5 +61,22 @@ export default {
             }
         })
     },
+
+    bindEvent(oList, setCurrentNews) {
+        // 这里使用事件代理。因为事件比较多，不可能循环绑定，所以采用事件代理的方式进行绑定
+        oList.addEventListener('click', this._goToDetail.bind(this, setCurrentNews), false)
+    },
+    _goToDetail (setCurrentNews) {
+        // 这里要拿到根级的div
+        const oItem = getItemNode(arguments[1].target) 
+        console.log('oitem', oItem);
+
+        const options = {
+            idx: oItem.dataset.index,
+            pageNum: oItem.dataset.page
+        }
+        setCurrentNews(options)
+        window.location.href = `detail.html?path=${location.pathname}`
+    }
 
 }

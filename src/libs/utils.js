@@ -37,11 +37,31 @@ function scrollToBottom(callback) {
     }
 }
 
+// 这里拿到最外层的div
+function getItemNode (target) {
+  while(target = target.parentNode) {
+    if(target.className.split(' ')[0] === 'news-item') {
+      return target
+    }
+  }
+}
+
+// 获取页面的path
+function getUrlQueryValue(key) {
+  const reg = new RegExp('(^|&)' + key + '=([^&|*])(&|$)', 'i')
+  const res = window.location.search.substr(1).match(reg)
+
+  // match出来的是一个数组，所以取第二项（测试一下）
+  return res !== null ? decodeURIComponent(res[2]) : null
+}
+
 export {
     tplReplace,
     scrollToTop,
     setPageData,
     scrollToBottom,
+    getItemNode,
+    getUrlQueryValue
 }
 
 /*********** 内部方法 ************/
